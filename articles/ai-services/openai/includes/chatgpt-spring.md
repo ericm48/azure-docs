@@ -8,7 +8,8 @@ ms.author: mbullwin
 ms.date: 11/27/2023
 ---
 
-[Source code](https://github.com/spring-projects-experimental/spring-ai) | [Artifacts (Maven)](https://repo.spring.io/ui/native/snapshot/org/springframework/experimental/ai/spring-ai-openai-spring-boot-starter/0.7.0-SNAPSHOT) | [Sample](https://github.com/rd-1-2022/ai-azure-openai-prompt-roles)
+[Source code](https://github.com/spring-projects-experimental/spring-ai) | [Artifacts (Maven)](https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-core/1.0.0-M1) | [Sample](https://github.com/Azure-Samples/spring-ai-samples/projects/spring-ai-completion)
+
 
 ## Prerequisites
 
@@ -36,158 +37,209 @@ Create a new Spring project.
 In a Bash window, create a new directory for your app, and navigate to it.
 
 ```bash
-mkdir ai-chat-demo && cd ai-chat-demo
+mkdir spring-ai-completion && cd spring-ai-completion
 ```
 
 Run the `spring init` command from your working directory. This command creates a standard directory structure for your Spring project including the main Java class source file and the *pom.xml* file used for managing Maven based projects.
 
 ```bash
-spring init -a ai-chat-demo -n AIChat --force --build maven -x
+spring init -a spring-ai-completion -n spring-ai-completion --force --build maven -x
 ```
 
 The generated files and folders resemble the following structure:
 
 ```
-ai-chat-demo/
-|-- pom.xml
-|-- mvn
-|-- mvn.cmd
-|-- HELP.md
-|-- src/
-    |-- main/
-    |   |-- resources/
-    |   |   |-- application.properties
-    |   |-- java/
-    |       |-- com/
-    |           |-- example/
-    |               |-- aichatdemo/
-    |                   |-- AiChatApplication.java
-    |-- test/
-        |-- java/
-            |-- com/
-                |-- example/
-                    |-- aichatdemo/
-                        |-- AiChatApplicationTests.java
+.
+└── spring-ai-completion
+    ├── HELP.md
+    ├── LICENSE
+    ├── LICENSE.md
+    ├── README.md
+    ├── ai-completion.iml
+    ├── mvnw
+    ├── mvnw.cmd
+    ├── pom.xml
+    └── src
+        ├── main
+        │   ├── java
+        │   │   └── com
+        │   │       └── example
+        │   │           └── ai_completion_demo
+        │   │               └── AiCompletionApplication.java
+        │   └── resources
+        │       └── application.properties
+        └── test
+            └── java
+                └── com
+                    └── example
+                        └── ai_completion_demo
+                            └── AiCompletionApplicationTests.java
 ```
 
-## Edit Spring application
+## Edit the Spring application
 
 1. Edit the *pom.xml* file.
 
-   From the root of the project directory, open the *pom.xml* file in your preferred editor or IDE and overwrite the file with the following content:
+   From the root of the project directory, open the *pom.xml* file in your preferred editor or IDE and overwrite the file with following content:
 
    ```xml
    <?xml version="1.0" encoding="UTF-8"?>
+   
    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-       <modelVersion>4.0.0</modelVersion>
-       <parent>
-           <groupId>org.springframework.boot</groupId>
-           <artifactId>spring-boot-starter-parent</artifactId>
-           <version>3.2.0</version>
-           <relativePath/> <!-- lookup parent from repository -->
-       </parent>
-       <groupId>com.example</groupId>
-       <artifactId>ai-chat-demo</artifactId>
-       <version>0.0.1-SNAPSHOT</version>
-       <name>AIChat</name>
-       <description>Demo project for Spring Boot</description>
-       <properties>
-           <java.version>17</java.version>
-       </properties>
-       <dependencies>
-           <dependency>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-starter</artifactId>
-           </dependency>
-           <dependency>
-               <groupId>org.springframework.experimental.ai</groupId>
-               <artifactId>spring-ai-azure-openai-spring-boot-starter</artifactId>
-               <version>0.7.0-SNAPSHOT</version>
-           </dependency>
-           <dependency>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-starter-test</artifactId>
-               <scope>test</scope>
-           </dependency>
-       </dependencies>
-       <build>
-           <plugins>
-               <plugin>
-                   <groupId>org.springframework.boot</groupId>
-                   <artifactId>spring-boot-maven-plugin</artifactId>
-               </plugin>
-           </plugins>
-       </build>
-       <repositories>
-           <repository>
-               <id>spring-snapshots</id>
-               <name>Spring Snapshots</name>
-               <url>https://repo.spring.io/snapshot</url>
-               <releases>
-                   <enabled>false</enabled>
-               </releases>
-           </repository>
-       </repositories>
-   </project>
-   ```
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+        <parent>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+            <version>3.3.2</version>
+            <relativePath/> <!-- lookup parent from repository -->
+        </parent>
+        <groupId>com.example</groupId>
+        <artifactId>ai-completion</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <name>AICompletion</name>
+        <description>Demo project for Spring Boot</description>
+        <properties>
+            <java.version>21</java.version>
+        </properties>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
+            </dependency>
 
-1. From the *src/main/java/com/example/aichatdemo* folder, open *AiChatApplication.java* in your preferred editor or IDE and paste in the following code:
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-azure-openai-spring-boot-starter</artifactId>
+                <version>1.0.0-M1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+        <build>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+                <!-- maven surefire -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <argLine>-XX:+EnableDynamicAgentLoading</argLine>
+                    </configuration>
+                </plugin>
+
+            </plugins>
+        </build>
+        <repositories>
+            <repository>
+                <id>spring-releases</id>
+                <name>Spring Releases</name>
+                <url>https://repo.spring.io/milestone/</url>
+                <releases>
+                    <enabled>true</enabled>
+                </releases>
+            </repository>
+        </repositories>
+    </project>
+```    
+
+1. From the *src/main/java/com/example/ai_completion_demo* folder, open *AiCompletionApplication.java* in your preferred editor or IDE and paste in the following code:
 
    ```java
-   package com.example.aichatdemo;
+   package com.example.ai_completion_demo;
 
-   import java.util.ArrayList;
-   import java.util.List;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-   import org.springframework.ai.client.AiClient;
-   import org.springframework.ai.prompt.Prompt;
-   import org.springframework.ai.prompt.messages.ChatMessage;
-   import org.springframework.ai.prompt.messages.Message;
-   import org.springframework.ai.prompt.messages.MessageType;
-   import org.springframework.beans.factory.annotation.Autowired;
-   import org.springframework.boot.CommandLineRunner;
-   import org.springframework.boot.SpringApplication;
-   import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-   @SpringBootApplication
-   public class AiChatApplication implements CommandLineRunner
-   {
-       private static final String ROLE_INFO_KEY = "role";
+@SpringBootApplication
+public class AiCompletionApplication implements CommandLineRunner
+{
+    private final ChatClient chatClient;
 
-       @Autowired
-       private AiClient aiClient;
+    public AiCompletionApplication(ChatClient.Builder builder) {
+        this.chatClient = builder.build();
+    }
 
-       public static void main(String[] args) {
-           SpringApplication.run(AiChatApplication.class, args);
-       }
+    public static void main(String[] args) {
+        SpringApplication.run(AiCompletionApplication.class, args);
+    }
 
-       @Override
-       public void run(String... args) throws Exception
-       {
-           System.out.println(String.format("Sending chat prompts to AI service. One moment please...\r\n"));
+    @Override
+    public void run(String... args) throws Exception {
 
-           final List<Message> msgs = new ArrayList<>();
+        String question = "When was Microsoft founded?";
+        String answer = null;
 
-           msgs.add(new ChatMessage(MessageType.SYSTEM, "You are a helpful assistant"));
-           msgs.add(new ChatMessage(MessageType.USER, "Does Azure OpenAI support customer managed keys?"));
-           msgs.add(new ChatMessage(MessageType.ASSISTANT, "Yes, customer managed keys are supported by Azure OpenAI?"));
-           msgs.add(new ChatMessage(MessageType.USER, "Do other Azure AI services support this too?"));
+        System.out.println(String.format("\r\nThe Question: %s \r\n \r\n", question));
 
-           final var resps = aiClient.generate(new Prompt(msgs));
+        System.out.println(String.format("Sending completion prompt to AI service. Wait for it..........\r\n"));
 
-           System.out.println(String.format("Prompt created %d generated response(s).", resps.getGenerations().size()));
+        answer = this.chatClient
+                .prompt()
+                .user(question)
+                .call()
+                .content();
 
-           resps.getGenerations().stream()
-             .forEach(gen -> {
-                 final var role = gen.getInfo().getOrDefault(ROLE_INFO_KEY, MessageType.ASSISTANT.getValue());
+        System.out.println(String.format("\r\nThe Answer: %s \r\n", answer));
 
-                 System.out.println(String.format("Generated respose from \"%s\": %s", role, gen.getText()));
-             });
-       }
+    }
 
-   }
-   ```
+}
+```
+
+2. From the *src/main/test/com/example/aicompletiondemo* folder, open *AiCompletionApplicationTests.java* in your preferred editor or IDE and paste in the following code:
+
+```java
+package com.example.ai_completion_demo;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+@SpringBootTest
+class AiCompletionApplicationTests {
+
+	@Autowired
+	private ChatClient.Builder builder;
+
+	@Test
+	void completionTest() {
+
+		ChatClient chatClient = null;
+		String question = "When was Microsoft founded?";
+		String answer = null;
+		String realAnswer = "1975";
+
+		chatClient = builder.build();
+
+		assertTrue(chatClient != null);
+
+		answer = chatClient
+				.prompt()
+				.user(question)
+				.call()
+				.content();
+
+		assertTrue(answer.contains(realAnswer));
+
+	}
+
+}
+```
 
    > [!IMPORTANT]
    > For production, use a secure way of storing and accessing your credentials like [Azure Key Vault](/azure/key-vault/general/overview). For more information about credential security, see the Azure AI services [security](../../security-features.md) article.
@@ -201,20 +253,29 @@ ai-chat-demo/
 ## Output
 
 ```output
+[INFO] Attaching agents: []
+
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
 ( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
- :: Spring Boot ::                (v3.1.5)
 
-2023-11-07T13:31:10.884-06:00  INFO 6248 --- [           main] c.example.aichatdemo.AiChatApplication   : No active profile set, falling back to 1 default profile: "default"
-2023-11-07T13:31:11.595-06:00  INFO 6248 --- [           main] c.example.aichatdemo.AiChatApplication   : Started AiChatApplication in 0.994 seconds (process running for 1.28)
-Sending chat prompts to AI service. One moment please...
+ :: Spring Boot ::                (v3.3.2)
 
-Prompt created 1 generated response(s).
-Generated respose from "assistant": Yes, other Azure AI services also support customer managed keys. Azure AI Services, Azure Machine Learning, and other AI services in Azure provide options for customers to manage and control their encryption keys. This allows customers to have greater control over their data and security.
+2024-08-16T12:43:59.188-06:00  INFO 97271 --- [AICompletion] [           main] c.e.a.AiCompletionApplication            : Starting AiCompletionApplication using Java 21.0.4 with PID 97271 (/Users/emanley/dev2/azure/microsoft/forkz/spring-ai-samples/projects/spring-ai-completion/target/classes started by emanley in /Users/emanley/dev2/azure/microsoft/forkz/spring-ai-samples/projects/spring-ai-completion)
+2024-08-16T12:43:59.190-06:00  INFO 97271 --- [AICompletion] [           main] c.e.a.AiCompletionApplication            : No active profile set, falling back to 1 default profile: "default"
+2024-08-16T12:44:00.261-06:00  WARN 97271 --- [AICompletion] [           main] c.a.c.http.netty.implementation.Utility  : The following Netty dependencies have versions that do not match the versions specified in the azure-core-http-netty pom.xml file. This may result in unexpected behavior. If your application runs without issue this message can be ignored, otherwise please update the Netty dependencies to match the versions specified in the pom.xml file. Versions found in runtime: 'io.netty:netty-common' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-handler' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-handler-proxy' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-buffer' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-codec' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-codec-http' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-codec-http2' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-transport-native-unix-common' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-transport-native-epoll' version: 4.1.111.Final (expected: 4.1.101.Final),'io.netty:netty-transport-native-kqueue' version: 4.1.111.Final (expected: 4.1.101.Final)
+2024-08-16T12:44:00.730-06:00  INFO 97271 --- [AICompletion] [           main] c.e.a.AiCompletionApplication            : Started AiCompletionApplication in 1.943 seconds (process running for 2.4)
+
+The Question: When was Microsoft founded?
+
+
+Sending completion prompt to AI service. Wait for it..........
+
+
+The Answer: Microsoft was founded on April 4, 1975.  
 ```
 
 > [!div class="nextstepaction"]

@@ -18,7 +18,7 @@ zone_pivot_groups: openai-use-your-data
 
 ::: zone pivot="programming-language-spring"
 
-[Source code](https://github.com/spring-projects-experimental/spring-ai)| [Source code](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai) | [Sample](https://github.com/rd-1-2022/ai-azure-retrieval-augmented-generation)
+[Source code](https://github.com/spring-projects-experimental/spring-ai) | [Artifacts (Maven)](https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-core/1.0.0-M1) | [Sample](https://github.com/Azure-Samples/spring-ai-samples/projects/spring-ai-completion) |
 
 ::: zone-end
 
